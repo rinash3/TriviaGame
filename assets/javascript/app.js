@@ -1,22 +1,24 @@
 $(document).ready(function() {
 
+    //variables
+    //On start click
+    //1.display questions
+    //2. display answers
+    //run timer
 
-
-    //as long as timer=>30sec user can keep playing
-    //else game over 
-    //display counters - correct, incorrect,unanswered 
-
-    //game()
-    //questions
-    //answers
+    //on user selection
+    //catch click event => put value of clicked event into user guess 
     //correct answer
     //user answer
+    //while timer>-1
+     //if user guess = correct answer =>correct counter ++
+     //if else incorrect counter++
+    //else unanswered = undefined answers
     //for every question only one selection available - 
     //when clicking on second answer uncheck radio button and check latest selection
-    //if user selection = correct answer
-    //correct counter ++
-    //else incorrect counter++
-    //unanswered = undefined answers
+   
+ 
+   
 
     $("#start").on("click", start);
     $("#done").on("click", stop);
@@ -25,10 +27,19 @@ $(document).ready(function() {
     var correctCount = 0;
     var wrongCount = 0;
     var noanswerCount = 0;
-    var timer = 30;
     var userGuess = "";
+    //timer variables
+    var timer = 30;
     var timerRunning = false;
     var intervalId;
+    
+  
+    
+
+    const questionContainer = document.getElementById('question');
+    const resultsContainer = document.getElementById('results');
+    const answerContainer = document.getElementById('answer');
+    const doneButton = document.getElementById('done');
 
     function start() {
         // start timer 
@@ -37,7 +48,7 @@ $(document).ready(function() {
             timerRunning = true;
             $(this).hide();
             //---display questions with available answers
-
+            trivia()
         }
     }
 
@@ -45,6 +56,8 @@ $(document).ready(function() {
         //  learInterval to stop the count here and set the timer to not running.
         clearInterval(intervalId);
         timerRunning = false;
+        $(this).hide();
+        endOfGame()
     }
 
     function count() {
@@ -74,6 +87,7 @@ $(document).ready(function() {
         return seconds;
     }
     //array of question, answers and correct answer
+    
     var Questions = [{
             question: "Who is the strongest?",
             answers: {
@@ -102,8 +116,51 @@ $(document).ready(function() {
             },
             correctAnswer: "c"
         }
+     
     ];
-    console.log(Object.values(Questions));
-
+   
+    function trivia(){
+        // we'll need a place to store the HTML output
+        const output = [];
+      
+        // for each question...
+        Questions.forEach(
+          (currentQuestion, questionNumber) => {
+      
+            // we'll want to store the list of answer choices
+            const answers = [];
+           
+      
+            // and for each available answer...
+            for(letter in currentQuestion.answers){
+      
+              // ...add an HTML radio button
+              answers.push(
+                `<label>
+                  <input type="radio" name="question${questionNumber}" value="${letter}">
+                  ${letter} :
+                  ${currentQuestion.answers[letter]}
+                </label>`
+              );
+            }
+      
+            // add this question and its answers to the output
+            output.push(
+              `<div class="question"> ${currentQuestion.question} </div>
+              <div class="answer"> ${answers.join('')} </div>`
+            );
+           // console.log(answers);
+          }
+        );
+      
+        // finally combine our output list into one string of HTML and put it on the page
+        questionContainer.innerHTML = output.join('');
+        console.log(Questions.correctAnswer);
+        }
+   function endOfGame() {
+    
+    const answerContainers = questionContainer.querySelectorAll('.answers');
+   
+   }
 
 })

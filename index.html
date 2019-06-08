@@ -11,17 +11,23 @@
 </head>
 
 <body>
+    <div class="container">
     <h1>Totally Trivial Trivia</h1>
+    <h2>Click start to play the game</h2>
     <div id="wrapper">
 
         <div id="timer"></div>
-
-        <!-- Div containing our stopwatch controls -->
+ 
         <div id="buttons">
             <button id="start">Start</button>
             <button id="done">Done </button>
         </div>
         <div class="question-block">
+                <div id="question"></div>
+        </div>
+        <div class="answers-block">
+            <div id="answer"></div>
+        </div>
             <div class="results">
                 <div id="correct"></div>
                 <div id="incorrect"> </div>
@@ -29,7 +35,7 @@
             </div>
 
         </div>
-
+    </div>
         <!-- jQuery -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
