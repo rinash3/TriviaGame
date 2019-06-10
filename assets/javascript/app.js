@@ -24,32 +24,33 @@ $(document).ready(function() {
     $("#done").on("click", stop);
 
     //Define variables
-    var correctCount = 0;
-    var wrongCount = 0;
-    var noanswerCount = 0;
+    var correct = 0;
+    var wrong = 0;
+    var noanswer= 0;
     var userGuess = "";
     //timer variables
     var timer = 30;
     var timerRunning = false;
     var intervalId;
-    
-  
-    
-
-    const questionContainer = document.getElementById('question');
-    const resultsContainer = document.getElementById('results');
-    const answerContainer = document.getElementById('answer');
-    const doneButton = document.getElementById('done');
+   
+   
 
     function start() {
         // start timer 
+       
         if (!timerRunning) {
             intervalId = setInterval(count, 1000);
             timerRunning = true;
             $(this).hide();
-            //---display questions with available answers
-            trivia()
-        }
+             //runnig through the array of questions to display and append it to our question block
+            for (var i = 0; i < questionsAnswers.length; i++) {
+                trivia.append('<h2>' + questionsAnswers[i].question + '</h2>');
+                //runing through array of available choices to display the relevant answers for each question
+                for (var j = 0; j < questionsAnswers[i].choices.length; j++) {
+                    trivia.append('<p><input type="checkbox" name="question"'+ '" value="' + questionsAnswers[i].choices[j] + '">' + "     " +questionsAnswers[i].choices[j] + "</p>");
+                }
+            }   
+        }         
     }
 
     function stop() {
@@ -69,6 +70,10 @@ $(document).ready(function() {
         console.log(timeConverter(timer));
         //  Use the variable created to show the converted time
         $("#timer").html("Time Remaining :   " + "" + timeConverter(timer))
+        if (timeRmaining <=0) {
+            console.log('TIME UP');
+            stop();
+        }
     }
 
     function timeConverter(t) {
@@ -87,80 +92,40 @@ $(document).ready(function() {
         return seconds;
     }
     //array of question, answers and correct answer
-    
-    var Questions = [{
-            question: "Who is the strongest?",
-            answers: {
-                a: "Superman",
-                b: "The Terminator",
-                c: "Waluigi, obviously"
-            },
-            correctAnswer: "c"
-        },
-        {
-            question: "Which fictional city is the home of Batman?",
-            answers: {
-                a: "Central City",
-                b: "Gotham City",
-                c: "Metropolis"
-            },
-            correctAnswer: "b"
-        },
-        {
-            question: "In the film Babe, what type of animal was Babe?",
-            answers: {
-                a: "Horse",
-                b: "Cat",
-                c: "Pig",
+    var questionsAnswers = [{
+        question: "Which fictional city is the home of Batman?",
+        choices: ["Central City", "Gotham City", "Metropolis"],
+        correctAnswer: "Gotham City"
+    }, {
+        question: "Who is the strongest?",
+        choices: ["Superman",  "The Terminator", "Waluigi, obviously"],
+        correctAnswer: "Waluigi, obviously"
+    }, {
+        question: "In the film Babe, what type of animal was Babe?",
+        choices: ["Horse","Cat","Pig"],
+        correctAnswer:"Pig"
+    },     
+  
+];
 
-            },
-            correctAnswer: "c"
-        }
-     
-    ];
-   
-    function trivia(){
-        // we'll need a place to store the HTML output
-        const output = [];
-      
-        // for each question...
-        Questions.forEach(
-          (currentQuestion, questionNumber) => {
-      
-            // we'll want to store the list of answer choices
-            const answers = [];
-           
-      
-            // and for each available answer...
-            for(letter in currentQuestion.answers){
-      
-              // ...add an HTML radio button
-              answers.push(
-                `<label>
-                  <input type="radio" name="question${questionNumber}" value="${letter}">
-                  ${letter} :
-                  ${currentQuestion.answers[letter]}
-                </label>`
-              );
-            }
-      
-            // add this question and its answers to the output
-            output.push(
-              `<div class="question"> ${currentQuestion.question} </div>
-              <div class="answer"> ${answers.join('')} </div>`
-            );
-           // console.log(answers);
-          }
-        );
-      
-        // finally combine our output list into one string of HTML and put it on the page
-        questionContainer.innerHTML = output.join('');
-        console.log(Questions.correctAnswer);
-        }
-   function endOfGame() {
+var trivia = $('.question-block');
+
+
+
+function done() {
     
-    const answerContainers = questionContainer.querySelectorAll('.answers');
-   
-   }
+}
+
+
+// // endOfGame function prints resultsto the html 
+function endOfGame() {
+  
+    trivia.html('<h2>Times Up!</h2>');
+    trivia.append('<h3>Correct Answers: ' + correct + '</h3>');
+    trivia.append('<h3>Incorrect Answers: ' + wrong + '</h3>');
+    trivia.append('<h3>Unanswered: ' + (questionsAnswers.length - (wrong + correct)) + '</h3>');
+    
+}
+  
 
 })
