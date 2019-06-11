@@ -26,7 +26,6 @@ $(document).ready(function() {
     //Define variables
     var correct = 0;
     var wrong = 0;
-    var noanswer= 0;
     var userGuess = "";
     //timer variables
     var timer = 30;
@@ -111,20 +110,32 @@ $(document).ready(function() {
 var trivia = $('.question-block');
 
 
+function endOfGame(){
+    $('input[name="question"]:checked').each(function() {
+        
+      userGuess=(this.value);
+     console.log(userGuess);
+      
+         if (userGuess==questionsAnswers[0].correctAnswer||userGuess==questionsAnswers[1].correctAnswer||userGuess==questionsAnswers[2].correctAnswer) {
+             correct++
+             
+         }else{
+             wrong++
+         }
+          
+      }
+     );
 
-function done() {
-    
+    // runs result function inside the done function
+    result();
 }
-
-
-// // endOfGame function prints resultsto the html 
-function endOfGame() {
+function result() {
   
-    trivia.html('<h2>Times Up!</h2>');
+   trivia.html('<h2>Times Up!</h2>');
     trivia.append('<h3>Correct Answers: ' + correct + '</h3>');
     trivia.append('<h3>Incorrect Answers: ' + wrong + '</h3>');
     trivia.append('<h3>Unanswered: ' + (questionsAnswers.length - (wrong + correct)) + '</h3>');
-    
+    $("#timer").hide();
 }
   
 
